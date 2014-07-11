@@ -641,6 +641,9 @@ void SV_ParseClientCommand(string s) {
 		sprint(self, cvar_changes);
 	} else if(cmd == "afk") {
 		MarkAway(self, 1);
+    } else if(cmd == "removenadgets") {
+        if(sv_cheats || self.maycheat)
+            HG_RemoveAll(self);
 	} else if(cmd == "pointparticles") {
 		if((sv_cheats || self.maycheat) && tokens == 5)
 		{

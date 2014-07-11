@@ -893,6 +893,14 @@ void PlayerDamage(entity inflictor, entity attacker, float damage, float deathty
                 SpawnThrownWeapon(self.origin + (self.mins + self.maxs) * 0.5, self.switchweapon);
 		}
 		
+        
+        float removenadgets;
+        if(g_nadgets)
+            removenadgets = cvar("g_nadgets_remove_on_death");
+        
+        if(removenadgets > 1)
+            HG_RemoveAll(self);
+        
 		// print an obituary message
 		Obituary (attacker, inflictor, self, deathtype);
 		race_PreDie();
@@ -944,6 +952,9 @@ void PlayerDamage(entity inflictor, entity attacker, float damage, float deathty
 		
         if(Freeze_Hook_PlayerDies(attacker, force, deathtype))
             return;
+        
+        if(removenadgets < 2)
+            HG_RemoveAll(self);
         
 		Boobs_DropAll(force);
 		
