@@ -718,6 +718,9 @@ void HG_DetonateAll(entity plr) {
 void HG_RemoveAll(entity plr) {
     entity n;
     
+    if(!g_nadgets)
+        return;
+    
     for(n = world; (n = find(n, classname, "hg_grenade"));)
         if(n.owner == plr)
             HG_Grenade_FadeOut(n);

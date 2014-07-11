@@ -916,6 +916,7 @@ void PutObserverInServer (void)
     
     self.justconnected = FALSE;
     CA_PlayerLeaves();
+    HG_RemoveAll(self);
 }
 
 float RestrictSkin(float s)
@@ -2071,6 +2072,7 @@ void ClientDisconnect (void)
     }
     
     CA_PlayerLeaves();
+    HG_RemoveAll(self);
     JoinQ_Pop();
 }
 
