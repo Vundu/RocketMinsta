@@ -457,7 +457,7 @@ void Freeze_Hook_PlayerPreThink(void) {
             if(time - other.hg_stealthtime >= cvar("g_nadgets_cloak_actiondelay"))
             if(self != other && !other.frozen && other.team == self.team)
             if(time - other.revtime >= Freeze_CVar("revive_delay_after_revived"))
-            if(time - other.lastdamage >= Freeze_CVar("revive_delay_for_reviver") || BUFFS_PRESENT(other, BUFF_MEDIC))
+            if(time - other.lastdamage >= Freeze_CVar("revive_delay_for_reviver"))
             if(boxesoverlap(self.absmin - revive_extra_size, self.absmax + revive_extra_size, other.absmin, other.absmax))
             {
                 allow = Freeze_CVar("revive_through_walls");
