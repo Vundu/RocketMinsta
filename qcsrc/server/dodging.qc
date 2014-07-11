@@ -128,7 +128,7 @@ float dodging_GetPressedKeys()
 	if (self.movement_x > 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_FORWARD)) {
-			if(!(self.lastkeypressed == KEY_BACKWARD)){
+			if(self.lastkeypressed != KEY_BACKWARD) {
 				if ((time - self.last_FORWARD_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
 					tap_direction_x = 1.0;
 					dodge_detected = 1;
@@ -142,7 +142,7 @@ float dodging_GetPressedKeys()
 	if (self.movement_x < 0) {
 		// is this a state change?
  		if (!(self.pressedkeys & KEY_BACKWARD)) {
-			if(!(self.lastkeypressed == KEY_FORWARD)){
+			if(self.lastkeypressed != KEY_FORWARD) {
 				tap_direction_x = -1.0;
 				if ((time - self.last_BACKWARD_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
 					dodge_detected = 1;
@@ -156,7 +156,7 @@ float dodging_GetPressedKeys()
 	if (self.movement_y > 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_RIGHT)) {
-			if(!(self.lastkeypressed == KEY_LEFT)){
+			if(self.lastkeypressed != KEY_LEFT) {
 				tap_direction_y = 1.0;
 				if ((time - self.last_RIGHT_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
 					dodge_detected = 1;
@@ -170,7 +170,7 @@ float dodging_GetPressedKeys()
 	if (self.movement_y < 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_LEFT)) {
-			if(!(self.lastkeypressed == KEY_RIGHT)){
+			if(self.lastkeypressed != KEY_RIGHT) {
 				tap_direction_y = -1.0;
 				if ((time - self.last_LEFT_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
 					dodge_detected = 1;
