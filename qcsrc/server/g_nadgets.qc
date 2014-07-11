@@ -1053,14 +1053,7 @@ void HG_Shield_Trigger(void) {
                      self.hg_shield_stored * cvar("g_nadgets_shield_damage_store_forcefactor"), HG_SHIELD, targ);
         remove(infl);
         
-        switch(self.team) {
-            case COLOR_TEAM1:           eff = particleeffectnum("TE_TEI_G3RED_HIT");    break;
-            case COLOR_TEAM2:           eff = particleeffectnum("TE_TEI_G3BLUE_HIT");   break;
-            case COLOR_TEAM3: default:  eff = particleeffectnum("TE_TEI_G3YELLOW_HIT"); break;
-            case COLOR_TEAM4:           eff = particleeffectnum("TE_TEI_G3PINK_HIT");   break;
-        }
-        
-        trailparticles(world, eff, w_shotorg, end);
+        trailparticles(world, particleeffectnum("TE_TEI_G3YELLOW_HIT"), w_shotorg, end);
         te_csqc_lightningarc(start, end, TRUE, self.team);
         te_blast(end);
         
