@@ -520,7 +520,7 @@ void Obituary (entity attacker, entity inflictor, entity targ, float deathtype)
 				} else {
 					centerprint_spec(attacker, strcat(DAMAGE_CENTERPRINT_SPACER, "^1Moron! You fragged ", s, "^1, a team mate!"));
 					centerprint_spec(targ, strcat(DAMAGE_CENTERPRINT_SPACER, "^1You were fragged by ^7", a, "^1, the teamkilling moron"));
-					bprint ("^1", a, "^1 mows down a team mate\n");
+					bprint ("^1", a, "^1 mowed down team mate ", s, "\n");
 				}
 				GiveFrags(attacker, inflictor, targ, -1);
 				if (targ.killcount > 2) {
