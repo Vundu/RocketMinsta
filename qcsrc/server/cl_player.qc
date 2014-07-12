@@ -794,12 +794,13 @@ void PlayerDamage(entity inflictor, entity attacker, float damage, float deathty
 							PlayerSound(playersound_pain25, CHAN_PAIN, VOICETYPE_PLAYERSOUND);
 					}
 				}
-
-				// throw off bot aim temporarily
-				local float shake;
-				shake = damage * 5 / (bound(0,skill,100) + 1);
-				self.v_angle_x = self.v_angle_x + (random() * 2 - 1) * shake;
-				self.v_angle_y = self.v_angle_y + (random() * 2 - 1) * shake;
+				if(cvar(g_damageviewshake)){
+					// throw off bot aim temporarily
+					local float shake;
+					shake = damage * 5 / (bound(0,skill,100) + 1);
+					self.v_angle_x = self.v_angle_x + (random() * 2 - 1) * shake;
+					self.v_angle_y = self.v_angle_y + (random() * 2 - 1) * shake;
+				}
 			}
 		}
 		else
