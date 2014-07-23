@@ -25,6 +25,13 @@
 // the jump part of the dodge cannot be ramped
 .float dodging_single_action;
 
+//checks if a dodge has been "buffered" in so that when the player touches the ground they dodge
+.float dodgebuffered;
+
+.float tap_direction_x;
+.float tap_direction_y;
+
+
 void dodging_Initialize() {
 	// print("dodging_Initialize\n");
 
@@ -40,6 +47,12 @@ void dodging_Initialize() {
 	self.dodging_direction_y = 0;
 	
 	self.lastkeypressed = 0;
+	self.dodgebuffered = 0;
+	
+	//I'm going to cheat with tap_direction and if that doesn't work we're just setting dodging_directional manually
+	
+	self.tap_direction_x = 0;
+	self.tap_direction_y = 0;
 }
 
 // returns 1 if the player is close to a wall
@@ -76,21 +89,47 @@ float check_close_to_wall(float threshold) {
 }
 
 float check_close_to_ground(float threshold) {
-	if (self.flags & FL_ONGROUND)
+	if (self.flags & FL_ONGROUND){
 		return 1;
-
-	return 0;
+	}
+	else{
+		return 0;
+	}
 }
+
+
+float check_buffer_dodge(void){
+	if(check_close_to_ground(cvar("g_dodging_height_threshold")) && (self.dodgebuffered == 0)){
+		//on the ground
+		bprint("close to ground and no dodge buffered");
+		return 0;
+	}
+	else{
+		return 1;
+	}
+}
+
+float check_clear_buffer(void){
+	if((self.dodgebuffered) || check_close_to_ground(cvar("g_dodging_height_threshold"))){
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
+
+
 
 .float cvar_cl_dodging_timeout;
 float dodging_GetPressedKeys()
 {
+	
 	float length;
-	float tap_direction_x;
-	float tap_direction_y;
+	//float tap_direction_x;
+	//float tap_direction_y;
 
-	tap_direction_x = 0;
-	tap_direction_y = 0;
+	//tap_direction_x = 0;
+	//tap_direction_y = 0;
 
 	float dodge_detected;
 	if not(g_dodging)
@@ -121,78 +160,125 @@ float dodging_GetPressedKeys()
     //if(check_close_to_wall(cvar("g_dodging_wall_distance_threshold")))
     //    sprint(self, strcat("close to wall ", ftos(time), "\n"));
     
-	if not(check_close_to_ground(cvar("g_dodging_height_threshold")))
+	//if not(check_close_to_ground(cvar("g_dodging_height_threshold")))
     if not(check_close_to_wall(cvar("g_dodging_wall_distance_threshold")))
 		return 0;
-
+	
 	if (self.movement_x > 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_FORWARD)) {
 			if(self.lastkeypressed != KEY_BACKWARD) {
 				if ((time - self.last_FORWARD_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
-					tap_direction_x = 1.0;
-					dodge_detected = 1;
+					//dodge_detected = 1;
+					if(check_buffer_dodge()){
+						self.dodgebuffered = 1;
+					}
+					else{
+						dodge_detected = 1;
+						self.dodgebuffered = 0;
+					}
+					self.tap_direction_x = 1.0;
 					self.lastkeypressed = 0;
 				}
 			}
 			self.last_FORWARD_KEY_time = time;
- 		}
+		}
 	}
 
 	if (self.movement_x < 0) {
 		// is this a state change?
- 		if (!(self.pressedkeys & KEY_BACKWARD)) {
+		if (!(self.pressedkeys & KEY_BACKWARD)) {
 			if(self.lastkeypressed != KEY_FORWARD) {
-				tap_direction_x = -1.0;
+				self.tap_direction_x = -1.0;
 				if ((time - self.last_BACKWARD_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
-					dodge_detected = 1;
+					if(check_buffer_dodge()){
+						self.dodgebuffered = 1;
+					}
+					else{
+						dodge_detected = 1;
+						self.dodgebuffered = 0;
+					}
 					self.lastkeypressed = 0;
 				}
 			}
 			self.last_BACKWARD_KEY_time = time;
- 		}
+		}
 	}
 
 	if (self.movement_y > 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_RIGHT)) {
 			if(self.lastkeypressed != KEY_LEFT) {
-				tap_direction_y = 1.0;
+				self.tap_direction_y = 1.0;
 				if ((time - self.last_RIGHT_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
-					dodge_detected = 1;
+					if(check_buffer_dodge()){
+						self.dodgebuffered = 1;
+					}
+					else{
+						dodge_detected = 1;
+						self.dodgebuffered = 0;
+					}
 					self.lastkeypressed = 0;
 				}
 			}
 			self.last_RIGHT_KEY_time = time;
- 		}
+		}
 	}
 
 	if (self.movement_y < 0) {
 		// is this a state change?
 		if (!(self.pressedkeys & KEY_LEFT)) {
 			if(self.lastkeypressed != KEY_RIGHT) {
-				tap_direction_y = -1.0;
+				self.tap_direction_y = -1.0;
 				if ((time - self.last_LEFT_KEY_time) < self.cvar_cl_dodging_timeout)	{ 
-					dodge_detected = 1;
+					if(check_buffer_dodge()){
+						self.dodgebuffered = 1;
+					}
+					else{
+						dodge_detected = 1;
+						self.dodgebuffered = 0;
+					}
 					self.lastkeypressed = 0;
 				}
 			}
 			self.last_LEFT_KEY_time = time;
- 		}
+		}
+	}
+	
+	if(dodge_detected){
+		bprint("before buffer check, dodge detected");
 	}
 
-
-
+	if (self.dodgebuffered == 1){
+		if (check_clear_buffer()){
+			self.dodgebuffered = 0;
+			dodge_detected = 1;
+			bprint("cleared buffered dodge");
+		}
+		else{
+			dodge_detected = 0;
+		}
+	}
+	
+	
+	
+	
+	
 	if (dodge_detected == 1) {
+		bprint("detected a dodge");
 		self.last_dodging_time = time;
 
 		self.dodging_action = 1;
 		self.dodging_single_action = 1;
 
 		self.dodging_velocity_gain = cvar("g_dodging_horiz_speed");
-
-		self.dodging_direction_x = tap_direction_x;
-		self.dodging_direction_y = tap_direction_y;
+		
+		
+		//make this cleaner
+		//self.dodging_direction_x = tap_direction_x;
+		//self.dodging_direction_y = tap_direction_y;
+		self.dodging_direction_x = self.tap_direction_x;
+		self.dodging_direction_y = self.tap_direction_y;
 
 		// normalize the dodging_direction vector.. (unlike UT99) XD
 		length = length + self.dodging_direction_x * self.dodging_direction_x;
