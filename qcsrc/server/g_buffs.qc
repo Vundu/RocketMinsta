@@ -691,6 +691,9 @@ void Buffs_BuffPickup_SpawnWaypoint(entity e) {
     WaypointSprite_UpdateTextColors(e.buff_waypoint, e.colormod, '0 0 0', '0 0 0');
     WaypointSprite_UpdateTeamRadar(e.buff_waypoint, RADARICON_FLAG, e.colormod);
     e.buff_waypoint.waypointsprite_visible_for_player = Buffs_BuffPickup_Waypoint_VisibleForPlayer;
+    
+    if(e.buff_activetime && roundstate == ROUNDSTATE_GAME)
+        WaypointSprite_UpdateBuildFinished(e.buff_waypoint, time + e.buff_activetime);
 }
 
 void Buffs_BuffPickup_SetCooldown(float cd) {

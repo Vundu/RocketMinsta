@@ -297,7 +297,7 @@ void SV_ParseClientCommand(string s) {
 		if(!self)
 			return;
 		
-		if(!cvar("sv_fakeflag"))
+		if(!cvar("sv_fakeflag") && !self.vote_master)
 		{
 			sprint(self, "^1'fakeflag' is forbidden on this server.");
 			

@@ -1121,7 +1121,8 @@ void Damage(entity targ, entity inflictor, entity attacker, float damage, float 
         }
         
         damage_origtarget = targ;
-        if(targ.hg_linker && (deathtype != HG_TRANSLOC || cvar("g_nadgets_transloc_damage")) && deathtype != HG_GG && !DEATH_ISSPECIAL(deathtype)) {
+        if(targ.hg_linker && (deathtype != HG_TRANSLOC || cvar("g_nadgets_transloc_damage")) && deathtype != HG_GG && !DEATH_ISSPECIAL(deathtype))
+        IF_HG_LINKER_APPLICABLE(targ) {
             if(teams_matter && targ.team == attacker.team)
                 return;
             

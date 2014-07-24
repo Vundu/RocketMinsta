@@ -208,3 +208,7 @@ float approach(float v, float t, float d);
 #define ISFAGGOTMAP(m) (substring(m, 0, 7) == "fagcity" || substring(m, 0, 7) == "ikzbdsm")
 
 string FormatDamage(float f);
+
+#ifndef SVQC
+string FlagIcon(string cn);
+#endif

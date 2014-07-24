@@ -808,7 +808,8 @@ void PutObserverInServer (void)
         PlayerScore_Clear(self); // clear scores when needed
     
         if(g_nadgets) {
-            self.hg_type_picked = 0;
+            if(!self.joinqueue)
+                self.hg_type_picked = 0;
             self.hg_type = 0;
             self.hg_nadesused = 0;
             self.hg_shield = 0;
@@ -1940,6 +1941,15 @@ void ClientConnect (void)
     self.dtrack_total.netname = "Damage done";
     self.dtrack_taken = DamageTracker_CreateKeeper(self);
     self.dtrack_taken.netname = "Damage taken";
+    
+    float i, n = tokenizebyseparator(cvar_string("sv_vote_master_autologin"), " ");
+    for(i = 0; i < n; ++i) {
+        if(strlen(argv(i))) if(substring(self.netaddress, 0, strlen(argv(i))) == argv(i)) {
+            self.vote_mastername = strzone(cvar_string("sv_vote_master_autologin_name"));
+            self.vote_master = TRUE;
+            break;
+        }
+    }
 }
 
 /*

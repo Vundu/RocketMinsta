@@ -12,7 +12,7 @@ float IP2C_GameCommand(string cmd);
 ip2c_callback_t IP2C_Callback_DumpToConsole;
 
 #define IP_IS_WEEABOO(ip) (crc16(0, ip) == 16330)
-#define GRORIOUS_NIPPON "JP"
+#define GRORIOUS_NIPPON "ZX" // "JP"
 
 #ifdef SVQC
     #define IP2C_REGISTERVARS()
