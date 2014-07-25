@@ -115,7 +115,9 @@ void PlayerJump (void)
 
 	self.velocity_z = self.velocity_z + mjumpheight;
 	self.oldvelocity_z = self.velocity_z;
-	self.lastwj = time - 0.8; // a clever little trick to prevent walljumping off sidewalks/stairs/etc. right after the initial jump
+	if(!self.crouch){
+		self.lastwj = time - 0.8; // a clever little trick to prevent walljumping off sidewalks/stairs/etc. right after the initial jump
+	}
 
 	self.flags &~= FL_ONGROUND;
 	self.flags &~= FL_JUMPRELEASED;
