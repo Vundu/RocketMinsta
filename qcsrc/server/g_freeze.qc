@@ -372,6 +372,7 @@ void Freeze_RevivePlayer(entity plr, entity revlist) {
         e.revresettime = time + frametime * 2;
     }
     
+	RemoveGrapplingHook(plr);
     plr.hg_plasmalock = 0;
     centerprint_spec(plr, strcat("^5You were revived by ^7", names, "\n"));
     bprint("^7", names, "^5 revived ^7", plr.netname, "\n");
