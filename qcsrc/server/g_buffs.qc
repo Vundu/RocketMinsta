@@ -452,6 +452,14 @@ void Buffs_ClientFrame(void) {
         ON_BUFF_REMOVED(BUFF_ADEPT) {
             self.hg_stealth_saved = 0;
         }
+		
+		ON_BUFF_ADDED(BUFF_AGILITY) {
+			self.gravity = 0.5;
+		}
+		
+		ON_BUFF_REMOVED(BUFF_AGILITY) {	
+			self.gravity = 0;
+		}
         
         self.oldbuffs = self.buffs;
     }

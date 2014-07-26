@@ -77,7 +77,9 @@ void CreatureFrame (void)
 					dm = min((dm - g_balance_falldamage_minspeed) * g_balance_falldamage_factor, g_balance_falldamage_maxdamage);
 				if (dm > 0)
 				{
-					Damage (self, world, world, dm, DEATH_FALL, self.origin, '0 0 0');
+					if(!BUFFS_PRESENT(self, BUFF_AGILITY)){
+						Damage (self, world, world, dm, DEATH_FALL, self.origin, '0 0 0');
+					}
 				}
 				else if(vlen(self.velocity) > 100000 && cvar("developer"))
 				{

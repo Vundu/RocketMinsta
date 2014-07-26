@@ -55,6 +55,8 @@ void PlayerJump (void)
 			self.velocity_z = 200;
 		else if (self.watertype == CONTENT_SLIME)
 			self.velocity_z = 80;
+		else if (BUFFS_PRESENT(self, BUFF_AGILITY))
+			self.velocity_z = 160;
 		else
 			self.velocity_z = 50;
 
@@ -122,11 +124,27 @@ void PlayerJump (void)
 	self.flags &~= FL_ONGROUND;
 	self.flags &~= FL_JUMPRELEASED;
 
-	if (self.crouch)
+	if (self.crouch){
 		setanim(self, self.anim_duckjump, FALSE, TRUE, TRUE);
-	else
+		if(BUFFS_PRESENT(self, BUFF_AGILITY)){
+			makevectors(self.angles);
+			float xfor, yfor;
+			xfor = 900 * v_forward;
+			yfor = 900 * v_right;
+			//bprint("vlen speed ", ftos(vlen(self.velocity)), "\n");
+			if(vlen(self.velocity) < 600){
+				//make 900 config variable
+				self.velocity_x = xfor;
+				self.velocity_y = yfor;
+				self.velocity_z = self.velocity_z + 20;
+			}
+		}
+	}
+	else{
 		setanim(self, self.anim_jump, FALSE, TRUE, TRUE);
-
+	}
+	
+	
 	if(g_jump_grunt)
 		PlayerSound(playersound_jump, CHAN_PLAYER, VOICETYPE_PLAYERSOUND);
 
@@ -953,7 +971,7 @@ void SV_PlayerPhysics()
 
 	if(isplayer)
 	{
-		if(sv_doublejump)
+		if(sv_doublejump || BUFFS_PRESENT(self, BUFF_AGILITY))
 		{
 			self.flags &~= FL_ONGROUND;
 			tracebox(self.origin + '0 0 1', self.mins, self.maxs, self.origin - '0 0 1', MOVE_NORMAL, self);
@@ -1053,8 +1071,8 @@ void SV_PlayerPhysics()
 				self.waterlevel = WATERLEVEL_WETFEET;
 			else
 			{
-				self.waterlevel = WATERLEVEL_NONE;
-				self.watertype = CONTENT_EMPTY;
+					self.waterlevel = WATERLEVEL_NONE;
+					self.watertype = CONTENT_EMPTY;
 			}
 		}
 		// acceleration
@@ -1292,7 +1310,7 @@ void SV_PlayerPhysics()
 			else
 				PM_Accelerate(wishdir, wishspeed, wishspeed0, airaccel, airaccelqw, sv_airaccel_sideways_friction / maxairspd);
 
-			if(sv_aircontrol)
+			if(sv_aircontrol || BUFFS_PRESENT(self, BUFF_AGILITY))
 				CPM_PM_Aircontrol(wishdir, wishspeed2);
 		}
 	}

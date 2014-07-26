@@ -794,7 +794,7 @@ void PlayerDamage(entity inflictor, entity attacker, float damage, float deathty
 							PlayerSound(playersound_pain25, CHAN_PAIN, VOICETYPE_PLAYERSOUND);
 					}
 				}
-				if(cvar(g_damageviewshake)){
+				if(cvar("g_damageviewshake")){
 					// throw off bot aim temporarily
 					local float shake;
 					shake = damage * 5 / (bound(0,skill,100) + 1);
