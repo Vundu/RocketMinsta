@@ -9,10 +9,11 @@
 #define BUFF_TENACITY   128
 #define BUFF_WRATH      256
 #define BUFF_ADEPT      512
+#define BUFF_AGILITY	1024
 
 #define BUFF_FIRST      BUFF_ARC
-#define BUFF_LAST       BUFF_ADEPT
-#define BUFF_COUNT      10
+#define BUFF_LAST       BUFF_AGILITY
+#define BUFF_COUNT      11
 
 string Buffs_TypeToName(float);
 float Buffs_NameToType(string);

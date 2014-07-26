@@ -78,7 +78,7 @@ void PlayerJump (void)
 	if(self.health <= g_bloodloss)
 		return;
 
-	if(sv_doublejump)
+	if(sv_doublejump || BUFFS_PRESENT(self, BUFF_AGILITY))
 		if(time < self.doublejump_nextjumptime)
 			return;
 
@@ -130,7 +130,7 @@ void PlayerJump (void)
 	if(g_jump_grunt)
 		PlayerSound(playersound_jump, CHAN_PLAYER, VOICETYPE_PLAYERSOUND);
 
-	if(sv_doublejump)
+	if(sv_doublejump || BUFFS_PRESENT(self, BUFF_AGILITY))
 	{
 		// we're moving upwards at self.velocity_z
 		// only allow jumping after we got 3 units upwards

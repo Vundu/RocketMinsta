@@ -11,6 +11,7 @@ string Buffs_TypeToName(float buff) {
         case BUFF_TENACITY  :      return "tenacity";
         case BUFF_WRATH     :      return "wrath";
         case BUFF_ADEPT     :      return "adept";
+		case BUFF_AGILITY	:      return "agility";
         default             :      return "unknown";
     }
 }
@@ -27,6 +28,7 @@ float Buffs_NameToType(string name) {
         case "tenacity"     :      return BUFF_TENACITY;
         case "wrath"        :      return BUFF_WRATH;
         case "adept"        :      return BUFF_ADEPT;
+		case "agility"		:      return BUFF_AGILITY;
         default             :      return 0;
     }
 }
@@ -43,6 +45,7 @@ string Buffs_TypeToExpandedName(float buff) {
         case BUFF_TENACITY  :      return "Tenacity";
         case BUFF_WRATH     :      return "Wrath";
         case BUFF_ADEPT     :      return "Adept";
+		case BUFF_AGILITY	:      return "Agility";
         default             :      return "Unknown";
     }
 }
@@ -63,6 +66,7 @@ vector Buffs_TypeToColor(float buff) {
         case BUFF_TENACITY  :      return '0.66  0.66  0.73';    // Silver
         case BUFF_WRATH     :      return '0.55  0.50  1.00';    // Bright Blue
         case BUFF_ADEPT     :      return '0.57  0.00  1.00';    // Viole(n)t
+		case BUFF_AGILITY	:      return '1.00  0.00  0.00';	 // Bright red
         default             :      return '0.00  0.00  0.00';
     }
 }
